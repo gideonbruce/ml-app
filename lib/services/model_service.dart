@@ -2,6 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import '../services/model_service.dart';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
+
+class ModelService {
+  Future<void> loadModel() async {
+    // Load ML model
+  }
+
+  List<Map<String, dynamic>> runInference(Uint8List image) {
+    // Process image and return detections
+    return [];
+  }
+
+  void dispose() {
+    // Clean up resources
+  }
+}
+
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -15,7 +32,7 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
   final ModelService _modelService = ModelService();
   bool isModelLoaded = false;
-  String detectionResult = "No detection yet";
+  List<Map<String, dynamic>> detectionResults = [];
 
   @override
   void initState() {
@@ -50,16 +67,15 @@ class _CameraScreenState extends State<CameraScreen> {
       if (!isModelLoaded) return;
 
       Uint8List inputImage = _convertCameraImage(image);
-      List<dynamic> output = _modelService.runInference(inputImage);
+      List<Map<String, dynamic>> output = _modelService.runInference(inputImage);
 
       setState(() {
-        detectionResult = output.toString();
+        detectionResults = output;
       });
     });
   }
 
   Uint8List _convertCameraImage(CameraImage image) {
-    // Convert CameraImage to Uint8List (Placeholder, implement actual conversion)
     return Uint8List(image.planes[0].bytes.length)..setAll(0, image.planes[0].bytes);
   }
 
@@ -80,21 +96,40 @@ class _CameraScreenState extends State<CameraScreen> {
           _controller.value.isInitialized
               ? CameraPreview(_controller)
               : Center(child: CircularProgressIndicator()),
-          Positioned(
-            bottom: 20,
-            left: 20,
-            child: Container(
-              padding: EdgeInsets.all(10),
-              color: Colors.black54,
-              child: Text(
-                detectionResult,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
+          CustomPaint(
+            painter: BoundingBoxPainter(detectionResults),
           ),
         ],
       )
           : Center(child: Text('Loading model...')),
     );
+  }
+}
+
+class BoundingBoxPainter extends CustomPainter {
+  final List<Map<String, dynamic>> detections;
+  BoundingBoxPainter(this.detections);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
+
+    for (var detection in detections) {
+      final rect = Rect.fromLTWH(
+        detection['x'] * size.width,
+        detection['y'] * size.height,
+        detection['width'] * size.width,
+        detection['height'] * size.height,
+      );
+      canvas.drawRect(rect, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
