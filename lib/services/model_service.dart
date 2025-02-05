@@ -3,19 +3,27 @@ import 'package:camera/camera.dart';
 import '../services/model_service.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:typed_data';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 class ModelService {
+  late Interpreter _interpreter;
+
   Future<void> loadModel() async {
-    // Load ML model
+    _interpreter = await Interpreter.fromAsset('assets/model.tflite');
   }
 
   List<Map<String, dynamic>> runInference(Uint8List image) {
-    // Process image and return detections
-    return [];
+    // Placeholder logic for processing image and running inference
+    // Replace with actual preprocessing and inference logic
+    List<Map<String, dynamic>> results = [
+      {'x': 0.1, 'y': 0.2, 'width': 0.3, 'height': 0.4, 'confidence': 0.9}
+    ];
+    return results;
   }
 
   void dispose() {
-    // Clean up resources
+    _interpreter.close();
   }
 }
 
