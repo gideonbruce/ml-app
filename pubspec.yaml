@@ -91,4 +91,4 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   assets:
-    - assets/model1.tflite
+    - assets/models/model1.tflite
