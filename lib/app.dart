@@ -10,12 +10,14 @@ void main() async {
 
 class WeedDetectionApp extends StatelessWidget {
   final List<CameraDescription> cameras;
-  const WeedDetectionApp({Key? key, required this.cameras}) : super(key: key);
+  const WeedDetectionApp({super.key, required this.cameras});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Weed Detection App',
+      theme: ThemeData(primarySwatch: Colors.green),
       home: CameraScreen(cameras: cameras),
     );
   }

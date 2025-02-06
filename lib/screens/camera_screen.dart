@@ -1,58 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const CameraScreen({Key? key, required this.cameras}) : super(key: key);
+  const CameraScreen({super.key, required this.cameras});
 
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  State<CameraScreen> createState() => _CameraScreenState();
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
-  late tfl.Interpreter _interpreter;
-  bool isModelLoaded = false;
+  late CameraController _cameraController;
+  bool _isCameraInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _initializeCamera();
-    _loadModel();
   }
 
-  void _initializeCamera() {
-    _controller = CameraController(widget.cameras[0], ResolutionPreset.medium);
-    _controller.initialize().then((_) {
-      if (!mounted) return;
-      setState(() {});
-    });
-  }
-
-  Future<void> _loadModel() async {
-    _interpreter = await tfl.Interpreter.fromAsset('assets/model.tflite');
+  Future<void> _initializeCamera() async {
+    _cameraController = CameraController(widget.cameras[0], ResolutionPreset.high);
+    await _cameraController.initialize();
     setState(() {
-      isModelLoaded = true;
+      _isCameraInitialized = true;
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    _interpreter.close();
+    _cameraController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Weed Detection')),
-      body: isModelLoaded
-          ? _controller.value.isInitialized
-          ? CameraPreview(_controller)
-          : Center(child: CircularProgressIndicator())
-          : Center(child: Text('Loading model...')),
+      appBar: AppBar(title: const Text('Weed Detection')),
+      body: _isCameraInitialized
+          ? CameraPreview(_cameraController)
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
