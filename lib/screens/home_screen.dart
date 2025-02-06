@@ -1,50 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:ml_app/services/model_service.dart';
+import 'camera_screen.dart';
+import 'detection_history_screen.dart';
+import 'settings_screen.dart';
+import 'about_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late CameraController _cameraController;
-  late ModelService _modelService;
-  bool _isCameraInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeCamera();
-    _modelService = ModelService();
-    _modelService.loadModel();
-  }
-
-  Future<void>
-  _initializeCamera() async {
-    final cameras = await availableCameras();
-    _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
-    _cameraController.initialize();
-    setState(() {
-      _isCameraInitialized = true;
-    });
-  }
-
-  @override
-  void dispose() {
-    _cameraController.dispose();
-    _modelService.dispose();
-    super.dispose();
-  }
+class HomeScreen extends StatelessWidget {
+  final List<CameraDescription> cameras;
+  const HomeScreen({super.key, required this.cameras});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Weed Detection')),
-      body: _isCameraInitialized?
-  CameraPreview(_cameraController) : const Center(child: CircularProgressIndicator()),
+      appBar: AppBar(title: Text('Weed Detection')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.green),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              title: Text('Home'),
+              onTap: () => Navigator.pop(context), // Close drawer
+            ),
+            ListTile(
+              leading: Icon(Icons.history),
+              title: Text('Detection History'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DetectionHistoryScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutScreen()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: CameraScreen(cameras: cameras),
     );
   }
 }

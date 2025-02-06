@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'screens/camera_screen.dart';
+import 'screens/auth_screen.dart';
+import 'package:firebase_core/firebase_core.dart/';
 
-late List<CameraDescription> cameras; // Declare cameras globally
+late List<CameraDescription> cameras;
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras(); // Get camera list before running app
+  await Firebase.initializeApp();
   runApp(const WeedDetectionApp());
 }
 
@@ -19,7 +20,7 @@ class WeedDetectionApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Weed Detection App',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: CameraScreen(cameras: cameras), // Pass cameras properly
+      home: AuthScreen(),
     );
   }
 }
