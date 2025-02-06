@@ -1,10 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tflite/tflite.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
+
   const CameraScreen({Key? key, required this.cameras}) : super(key: key);
 
   @override
@@ -12,9 +14,8 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
+  CameraController? _controller;
   bool _isDetecting = false;
-  String _result = "Detecting...";
 
   @override
   void initState() {
@@ -25,16 +26,11 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> _initializeCamera() async {
     _controller = CameraController(widget.cameras[0], ResolutionPreset.high);
-    await _controller.initialize();
-    if (!mounted) return;
-    setState(() {});
-
-    _controller.startImageStream((CameraImage image) {
-      if (!_isDetecting) {
-        _isDetecting = true;
-        _runModel(image).then((_) => _isDetecting = false);
-      }
-    });
+    await _controller!.initialize();
+    if (mounted) {
+      setState(() {});
+    }
+    _startDetection();
   }
 
   Future<void> _loadModel() async {
@@ -44,54 +40,67 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  Future<void> _runModel(CameraImage image) async {
-    var recognitions = await Tflite.runModelOnFrame(
-      bytesList: image.planes.map((plane) => plane.bytes).toList(),
-      imageHeight: image.height,
-      imageWidth: image.width,
-      numResults: 3,
-      threshold: 0.5,
-    );
+  void _startDetection() {
+    _controller!.startImageStream((CameraImage image) async {
+      if (!_isDetecting) {
+        _isDetecting = true;
 
-    if (recognitions.isNotEmpty) {
-      setState(() {
-        _result = recognitions.map((e) => e['label']).join(", ");
-      });
-    }
+        var recognitions = await Tflite.runModelOnFrame(
+          bytesList: image.planes.map((plane) => plane.bytes).toList(),
+          imageHeight: image.height,
+          imageWidth: image.width,
+          numResults: 2,
+          threshold: 0.5,
+        );
+
+        if (recognitions!.isNotEmpty) {
+          String detectedObject = recognitions.first['label'];
+          print("Detected: $detectedObject");
+
+          if (detectedObject.toLowerCase().contains("weed")) {
+            _captureAndSaveImage();
+          }
+        }
+
+        _isDetecting = false;
+      }
+    });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    Tflite.close();
-    super.dispose();
+  Future<void> _captureAndSaveImage() async {
+    try {
+      final Directory extDir = await getApplicationDocumentsDirectory();
+      final String dirPath = '${extDir.path}/WeedDetection';
+      await Directory(dirPath).create(recursive: true);
+
+      final String filePath = '$dirPath/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+      if (_controller!.value.isTakingPicture) return;
+
+      XFile imageFile = await _controller!.takePicture();
+      File(imageFile.path).copy(filePath);
+
+      print("Image saved: $filePath");
+    } catch (e) {
+      print("Error saving image: $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_controller.value.isInitialized) {
+    if (_controller == null || !_controller!.value.isInitialized) {
       return Center(child: CircularProgressIndicator());
     }
 
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        CameraPreview(_controller), // Full-screen camera preview
-        Positioned(
-          bottom: 50,
-          left: 20,
-          right: 20,
-          child: Container(
-            padding: EdgeInsets.all(12),
-            color: Colors.black54,
-            child: Text(
-              _result,
-              style: TextStyle(color: Colors.white, fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ],
+    return Scaffold(
+      body: CameraPreview(_controller!),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    Tflite.close();
+    super.dispose();
   }
 }
