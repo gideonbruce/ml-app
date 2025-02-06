@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:ml_app/app.dart';
 import 'screens/auth_screen.dart';
-import 'package:firebase_core/firebase_core.dart/';
+import 'package:firebase_core/firebase_core.dart';
 
 late List<CameraDescription> cameras;
 
@@ -20,7 +21,7 @@ class WeedDetectionApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Weed Detection App',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: AuthScreen(),
+      home: HomeScreen(cameras: cameras),
     );
   }
 }

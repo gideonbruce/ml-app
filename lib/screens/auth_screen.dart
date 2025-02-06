@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../main.dart';
 import 'home_screen.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (userCredential.user != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => HomeScreen(cameras: cameras)),
         );
       }
     } catch (e) {
