@@ -22,7 +22,7 @@ class WeedDetectionApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Weed Detection App',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: HomeScreen(cameras: cameras),
+      home: AuthScreen(cameras: cameras),
     );
   }
 }
