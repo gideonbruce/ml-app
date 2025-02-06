@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882337781820",
+    "project_id": "cv-weed-control",
+    "storage_bucket": "cv-weed-control.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882337781820:android:e36aa12961d2312d9f0b39",
+        "android_client_info": {
+          "package_name": "com.example.ml_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtfa0MdXlEl5drMStpRUVRuLVF7gyaYrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
