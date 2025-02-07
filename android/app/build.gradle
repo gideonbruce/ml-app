@@ -6,7 +6,8 @@ plugins {
 }
 
 android {
-    namespace = "com.example.realtime_weed_detection"
+    namespace "io.flutter.plugins.camera"
+    namespace "com.example.realtime_weed_detection"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
