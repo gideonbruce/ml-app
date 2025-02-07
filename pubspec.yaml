@@ -40,7 +40,7 @@ dependencies:
   flutter_screenutil: 5.0.0+2
   url_launcher: ^6.0.9
   image_picker: ^0.8.2
-  screenshot: ^1.2.3
+  screenshot: ^3.0.0
   image_gallery_saver: ^2.0.3
   tflite_flutter: ^0.11.0
 
