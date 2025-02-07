@@ -28,7 +28,7 @@ class Application extends StatelessWidget {
     final AppRoute appRoute = Provider.of<AppRoute>(context, listen: false);
     return ScreenUtilInit(
         designSize: Size(375, 812),
-        builder: () {
+        builder: (BuildContext context, Widget? child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData.dark(),
