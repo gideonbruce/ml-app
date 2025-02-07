@@ -1,7 +1,7 @@
 
-import 'package:flutter_realtime_object_detection/services/tensorflow_service.dart';
+import 'package:realtime_weed_detection/services/tensorflow_service.dart';
 
-import '/models/recognition.dart';
+import 'package:realtime_weed_detection/models/recognition.dart';
 
 class HomeViewState {
 

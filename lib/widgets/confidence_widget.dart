@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_realtime_object_detection/app/app_resources.dart';
-import 'package:flutter_realtime_object_detection/models/recognition.dart';
-import 'package:flutter_realtime_object_detection/services/tensorflow_service.dart';
+import 'package:realtime_weed_detection/app/app_resources.dart';
+import 'package:realtime_weed_detection/models/recognition.dart';
+import 'package:realtime_weed_detection/services/tensorflow_service.dart';
 
 class ConfidenceWidget extends StatelessWidget {
   final List<Recognition> entities;

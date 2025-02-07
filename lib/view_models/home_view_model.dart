@@ -1,9 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_realtime_object_detection/app/base/base_view_model.dart';
-import '/models/recognition.dart';
-import 'package:flutter_realtime_object_detection/services/tensorflow_service.dart';
-import 'package:flutter_realtime_object_detection/view_states/home_view_state.dart';
+import 'package:realtime_weed_detection/app/base/base_view_model.dart';
+import 'package:realtime_weed_detection/models/recognition.dart';
+import 'package:realtime_weed_detection/services/tensorflow_service.dart';
+import 'package:realtime_weed_detection/view_states/home_view_state.dart';
 
 class HomeViewModel extends BaseViewModel<HomeViewState> {
   bool _isLoadModel = false;

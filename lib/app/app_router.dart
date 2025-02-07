@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_realtime_object_detection/pages/home_screen.dart';
-import 'package:flutter_realtime_object_detection/pages/local_screen.dart';
-import 'package:flutter_realtime_object_detection/pages/splash_screen.dart';
-import 'package:flutter_realtime_object_detection/services/tensorflow_service.dart';
-import 'package:flutter_realtime_object_detection/view_models/home_view_model.dart';
-import 'package:flutter_realtime_object_detection/view_models/local_view_model.dart';
+import 'package:realtime_weed_detection/pages/home_screen.dart';
+import 'package:realtime_weed_detection/pages/local_screen.dart';
+import 'package:realtime_weed_detection/pages/splash_screen.dart';
+import 'package:realtime_weed_detection/services/tensorflow_service.dart';
+import 'package:realtime_weed_detection/view_models/home_view_model.dart';
+import 'package:realtime_weed_detection/view_models/local_view_model.dart';
 import 'package:provider/provider.dart';
 
 class AppRoute {
