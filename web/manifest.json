@@ -1,11 +1,11 @@
 {
-    "name": "ml_app",
-    "short_name": "ml_app",
+    "name": "realtime_weed_detection",
+    "short_name": "realtime_weed_detection",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "ml Computer VisionFlutter project.",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

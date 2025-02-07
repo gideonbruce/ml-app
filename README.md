@@ -1,6 +1,6 @@
-# ml_app
+# realtime_weed_detection
 
-ml Computer VisionFlutter project.
+A new Flutter project.
 
 ## Getting Started
 

@@ -1,5 +1,5 @@
-name: ml_app
-description: "ml Computer VisionFlutter project."
+name: realtime_weed_detection
+description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,13 +34,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  camera: ^0.11.1
-  tflite_flutter: 0.11.0
-  firebase_core: 2.29.0
-  firebase_auth: 4.18.0
-  google_sign_in: 6.2.1
-  tflite: ^1.1.1
-  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +87,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
-  assets:
-    - assets/models/model1.tflite

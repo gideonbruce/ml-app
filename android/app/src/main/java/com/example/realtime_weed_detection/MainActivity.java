@@ -1,4 +1,4 @@
-package com.example.ml_app;
+package com.example.realtime_weed_detection;
 
 import io.flutter.embedding.android.FlutterActivity;
 
